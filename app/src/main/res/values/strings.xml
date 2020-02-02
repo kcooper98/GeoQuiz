@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GeoQuiz</string>
+    <string name="score_label">Score:</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="previous_button">Previous</string>
+    <string name="next_button">Next</string>
+    <string name="question1">Colorado School of Mines is located in South Bend, IN.</string>
+    <string name="question2">Snow is just frozen sky Kool-Aid.</string>
+    <string name="question3">Carbon is the most common chemical in life.</string>
+    <string name="correct_toast">Your knowledge is undoubtedly top notch!"</string>
+    <string name="incorrect_toast">You must consult the elders for additional training."</string>
+</resources>
