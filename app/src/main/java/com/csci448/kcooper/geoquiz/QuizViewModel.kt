@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 
 class QuizViewModel : ViewModel() {
     private val questionBank: MutableList<Question> = mutableListOf()
-    private var score = 0
+    var score = 0
     var currentQuestionIndex = 0
 
     init {
@@ -26,12 +26,14 @@ class QuizViewModel : ViewModel() {
     fun moveToNextQuestion() {
         currentQuestionIndex = (currentQuestionIndex + 1) % questionBank.size
     }
+
     fun moveToPrevQuestion() {
         currentQuestionIndex--
         if (currentQuestionIndex < 0) {
-            currentQuestionIndex = questionBank.size
+            currentQuestionIndex = questionBank.size - 1
         }
     }
+
     fun isAnswerCorrect(userAnswer: Boolean) : Boolean {
         if (userAnswer == currentQuestionAnswer) {
             score++

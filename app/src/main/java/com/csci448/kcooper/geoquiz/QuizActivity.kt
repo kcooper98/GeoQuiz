@@ -1,5 +1,7 @@
 package com.csci448.kcooper.geoquiz
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_quiz.*
 
 private const val LOG_TAG = "448.QuizActivity"
-private const val TAG = "QuizActivity"
 private const val KEY_INDEX = "index"
+private const val SCORE_INDEX = "scoreIndex"
 
 class QuizActivity : AppCompatActivity() {
     private lateinit var quizViewModel: QuizViewModel
     private lateinit var scoreTextView: TextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,24 +33,30 @@ class QuizActivity : AppCompatActivity() {
         val storedIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
         quizViewModel.currentQuestionIndex = storedIndex
 
+        val storedScore = savedInstanceState?.getInt(SCORE_INDEX, 0) ?: 0
+        quizViewModel.score = storedScore
+
         scoreTextView = findViewById(R.id.score_text_view)
         val trueButton: Button = findViewById(R.id.true_button)
         val falseButton: Button = findViewById(R.id.false_button)
         val nextButton: Button = findViewById(R.id.next_button)
         val prevButton: Button = findViewById(R.id.previous_button)
+        val cheatButton: Button = findViewById(R.id.cheat_start_button)
 
-        updateQuestion();
+        updateQuestion()
 
         trueButton.setOnClickListener { checkAnswer(true) }
         falseButton.setOnClickListener { checkAnswer(false) }
         nextButton.setOnClickListener { moveToQuestion(1) }
         prevButton.setOnClickListener { moveToQuestion(-1) }
+        cheatButton.setOnClickListener{ launchCheat() }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
-        Log.i(TAG, "onSaveInstanceState")
+        Log.i(LOG_TAG, "onSaveInstanceState")
         savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentQuestionIndex)
+        savedInstanceState.putInt(SCORE_INDEX, quizViewModel.currentScore)
     }
 
     override fun onStart() {
@@ -107,5 +117,11 @@ class QuizActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun launchCheat() {
+        val isAnswerTrue = quizViewModel.currentQuestionAnswer
+        val intent = CheatActivity.createIntent(this@QuizActivity, isAnswerTrue)
+        startActivity(intent)
     }
 }
